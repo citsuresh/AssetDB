@@ -1,0 +1,88 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.master.cs" Inherits="SiteMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head runat="server">
+    <title></title>
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    
+    </asp:ContentPlaceHolder>
+</head>
+<script language="javascript" type="text/javascript">
+    function onCancel() {
+        location.reload(true)
+
+
+    }
+    var lastColorUsed;
+    function NAC_ChangeBackColor(row, highlight, RowHighlightColor) {
+        if (highlight) {
+            // set the background colour
+            lastColorUsed = row.style.backgroundColor;
+            row.style.backgroundColor = RowHighlightColor;
+        }
+        else {
+            // restore the colour
+            row.style.backgroundColor = lastColorUsed;
+        }
+    }
+</script>
+<body>
+    <form runat="server" autocomplete="off">
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    <Services>
+<asp:ServiceReference Path="~/cascadingdataservice.asmx" />
+</Services>
+
+                </asp:ScriptManager>
+    <div class="page">
+        <div class="header">
+            <div class="title">
+                <h1>
+                    Asset Management Database
+                </h1>
+            </div>
+            <div class="loginDisplay">
+                <asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="false">
+                    <AnonymousTemplate>
+                        [ <a href="~/Account/Login.aspx" ID="HeadLoginStatus" runat="server">Log In</a> ]
+						<br/> [ <a href="~/ResetPassword.aspx" ID="ResetPassword" runat="server">Reset Password</a> ]
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        Welcome <span class="bold"><asp:LoginName ID="HeadLoginName" runat="server" /></span>!
+                        [ <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="Log Out" LogoutPageUrl="~/"/> ] 
+						<br/> [ <a href="~/Account/ChangePassword.aspx" ID="ChangePassword" runat="server">Change Password</a> ]
+                    </LoggedInTemplate>
+                </asp:LoginView>
+            </div>
+            <div class="clear hideSkiplink">
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                    <Items>
+                        <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home"/>
+                        <asp:MenuItem NavigateUrl="~/Assets.aspx" Text="Assets"/>
+                        <asp:MenuItem NavigateUrl="~/Create.aspx" Text="New Asset"/>
+                        <asp:MenuItem NavigateUrl="~/Orders/Orders.aspx" Text="Orders"/>
+                        <asp:MenuItem NavigateUrl="~/Orders/NewOrders.aspx" Text="New Order"/>
+                        <asp:MenuItem NavigateUrl="~/Reports.aspx" Text="Reports"/>
+                        <asp:MenuItem NavigateUrl="~/Config/AssetConfig.aspx" Text="Config"/>
+						<asp:MenuItem NavigateUrl="~/Admin/Access/Users.aspx" Text="Admin"/>
+                        
+                    </Items>
+                </asp:Menu>
+            </div>
+        </div>
+        <div class="main">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                
+            </asp:ContentPlaceHolder>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div class="footer">
+        
+    </div>
+    </form>
+</body>
+</html>
