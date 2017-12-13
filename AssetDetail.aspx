@@ -92,7 +92,7 @@
                                 Text='<%# Bind("Status") %>' Width="155px">
                                 <asp:ListItem>Live</asp:ListItem>
                                 <asp:ListItem>Test</asp:ListItem>
-                                <asp:ListItem>Archived</asp:ListItem>
+                                <asp:ListItem>Retired</asp:ListItem>
                                 <asp:ListItem>Planned</asp:ListItem>
                                 <asp:ListItem Selected="True"></asp:ListItem>
                             </asp:DropDownList>

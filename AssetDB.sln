@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AssetDB", "..\AssetDB", "{FC27DDCD-CB83-4390-9ADF-7C4C12FD10A3}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AssetDB", ".", "{FC27DDCD-CB83-4390-9ADF-7C4C12FD10A3}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.2"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_60860"
 		Debug.AspNetCompiler.PhysicalPath = "..\AssetDB\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_60860\"
@@ -35,5 +35,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AAA336F8-29FB-4DF8-8A17-977B31CBC6FB}
 	EndGlobalSection
 EndGlobal
