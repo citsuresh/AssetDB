@@ -97,19 +97,19 @@
                                         <td>Last Service Date:</td>
                                         <td>
                                             <asp:TextBox ID="StartDateTextBox" runat="server"
-                                                Text='<%# Bind("StartDate") %>' Width="150px" />
+                                                Text='<%# Bind("StartDate", "{0:dd-MM-yyyy}") %>' Width="150px" />
                                             <asp:CalendarExtender ID="StartDateTextBox_CalendarExtender" runat="server"
                                                 Enabled="True" TargetControlID="EndDateTextBox" FirstDayOfWeek="Monday"
-                                                Format="dd/MM/yyyy"></asp:CalendarExtender>
+                                                Format="dd-MM-yyyy"></asp:CalendarExtender>
                                         </td>
                                         <td width="25"></td>
                                         <td>Next Service Date:</td>
                                         <td>
-                                            <asp:TextBox ID="EndDateTextBox" runat="server" Text='<%# Bind("EndDate") %>'
+                                            <asp:TextBox ID="EndDateTextBox" runat="server" Text='<%# Bind("EndDate", "{0:dd-MM-yyyy}") %>'
                                                 Width="150px" />
                                             <asp:CalendarExtender ID="EndDateTextBox_CalendarExtender" runat="server"
                                                 Enabled="True" TargetControlID="EndDateTextBox" FirstDayOfWeek="Monday"
-                                                Format="dd/MM/yyyy"></asp:CalendarExtender>
+                                                Format="dd-MM-yyyy"></asp:CalendarExtender>
                                         </td>
                                     </tr>
                                     <tr>

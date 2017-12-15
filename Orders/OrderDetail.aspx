@@ -211,9 +211,9 @@
                         Order Date:</td>
                     <td>
                         <asp:TextBox ID="OrderDateTextBox" runat="server" 
-                            Text='<%# Bind("OrderDate", "{0:d}") %>' Width="105px" />
+                            Text='<%# Bind("OrderDate") %>' Width="105px" />
                         <asp:CalendarExtender ID="OrderDateTextBox_CalendarExtender" runat="server" 
-                            Enabled="True" FirstDayOfWeek="Monday" Format="dd/MM/yyyy" 
+                            Enabled="True" FirstDayOfWeek="Monday" Format="dd-MM-yyyy" 
                             TargetControlID="OrderDateTextBox">
                         </asp:CalendarExtender>
                     </td>
