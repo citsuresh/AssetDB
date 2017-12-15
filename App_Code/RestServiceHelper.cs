@@ -61,7 +61,7 @@ public static partial class RestServiceHelper
 		}
 	}
 
-	public static void InvokePost(int assetType, int subAssetType, int count = 1)
+	public static bool InvokePost(int assetType, int subAssetType, int count = 1)
 	{
 		try
 		{
@@ -82,10 +82,13 @@ public static partial class RestServiceHelper
 
 			if (response.IsSuccessStatusCode)
 			{
+				return true;
 			}
 		}
 		catch (Exception)
 		{
 		}
+
+		return false;
 	}
 }

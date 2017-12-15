@@ -95,7 +95,7 @@
                     </tr>
                      <tr>
                         <td>
-                            Name:</td>
+                            Name/Serial Number:</td>
                         <td colspan="4">
                             <asp:TextBox ID="NameTextBox" runat="server" MaxLength="50" 
                                 Text='<%# Bind("Name") %>' Width="440px" />
@@ -115,17 +115,20 @@
                         <td>
                             <asp:DropDownList ID="StatusDropDownList" runat="server"  MaxLength="10" 
                                 Text='<%# Bind("Status") %>' Width="155px">
-                                <asp:ListItem>Live</asp:ListItem>
-                                <asp:ListItem>Test</asp:ListItem>
+                                <asp:ListItem Selected="True">Active</asp:ListItem>
+                                <asp:ListItem>Budgeted</asp:ListItem>
+                                <asp:ListItem>In Service</asp:ListItem>
+                                <asp:ListItem>Lost</asp:ListItem>
+                                <asp:ListItem>Reserved</asp:ListItem>
                                 <asp:ListItem>Retired</asp:ListItem>
-                                <asp:ListItem>Planned</asp:ListItem>
-                                <asp:ListItem Selected="True"></asp:ListItem>
+                                <asp:ListItem>Standby</asp:ListItem>
+                                <asp:ListItem></asp:ListItem>
                             </asp:DropDownList>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Start Date:</td>
+                            Last Service Date:</td>
                         <td>
                             <asp:TextBox ID="StartDateTextBox" runat="server" 
                                 Text='<%# Bind("StartDate", "{0:d}") %>' Width="150px" />
@@ -137,7 +140,7 @@
                         <td width="25">
                         </td>
                         <td>
-                            End Date:</td>
+                            Next Service Date:</td>
                         <td>
                             <asp:TextBox ID="EndDateTextBox" runat="server" Text='<%# Bind("EndDate", "{0:d}") %>' 
                                 Width="150px" />

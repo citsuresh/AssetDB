@@ -269,7 +269,6 @@ public partial class AssetDetail : System.Web.UI.Page
     }
     private void PopulateRootLevel()
     {
-
         string ConnectionString = WebConfigurationManager.ConnectionStrings["SQLConnectionString"].ConnectionString;
         SqlConnection con = new SqlConnection(ConnectionString);
         SqlCommand command = new SqlCommand("usp_AssetRelationshipHierarchyParent", con);
@@ -279,8 +278,9 @@ public partial class AssetDetail : System.Web.UI.Page
         DataTable dt = new DataTable();
         adapter.Fill(dt);
         PopulateNodes(dt, TreeView1.Nodes);
+	    ErrorMsg.Text = Request.QueryString["ErrorMessage"];
     }
-    private void PopulateNodes(DataTable dt, TreeNodeCollection nodes)
+	private void PopulateNodes(DataTable dt, TreeNodeCollection nodes)
     {
        
         foreach (DataRow dr in dt.Rows)
