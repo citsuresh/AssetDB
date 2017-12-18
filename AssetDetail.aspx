@@ -16,7 +16,7 @@
         <asp:SqlDataSource ID="SqlAsset" runat="server" ConnectionString="<%$ ConnectionStrings:SQLConnectionString %>"
             DeleteCommand="usp_DeleteAsset" DeleteCommandType="StoredProcedure"
             InsertCommandType="StoredProcedure" SelectCommand="usp_GetAsset" SelectCommandType="StoredProcedure"
-            UpdateCommand="usp_UpdateAsset" UpdateCommandType="StoredProcedure">
+            UpdateCommand="usp_UpdateAsset" UpdateCommandType="StoredProcedure" OnUpdated="SqlAsset_OnUpdated">
             <DeleteParameters>
                 <asp:Parameter Name="AssetID" Type="Int32" />
             </DeleteParameters>

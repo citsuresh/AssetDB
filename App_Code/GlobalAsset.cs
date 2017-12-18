@@ -2,7 +2,8 @@
 
 public partial class GlobalAsset
     {
-        public int AssetType { get; set; }
+	    public int AssetID { get; set; }
+	    public int AssetType { get; set; }
         public int AssetSubType { get; set; }
         public string SerialNumber { get; set; }
         public string ClientIdentifier { get; set; }
