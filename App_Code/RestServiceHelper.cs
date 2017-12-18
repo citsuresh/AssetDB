@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -97,13 +98,20 @@ public static partial class RestServiceHelper
 		try
 		{
 			HttpClient client = new HttpClient();
-			client.BaseAddress = new Uri("http://globalassetrestservicesample.azurewebsites.net/api/");
-			//client.BaseAddress = new Uri("http://localhost:11964/api/");
+
+			//client.BaseAddress = new Uri("http://globalassetrestservicesample.azurewebsites.net/api/");
+
+			var restServiceBaseAddress = ConfigurationManager.AppSettings["GLOBAL_REST_SERVICE_BASE_ADDRESS"];
+			if (string.IsNullOrEmpty(restServiceBaseAddress))
+			{
+				restServiceBaseAddress = "http://localhost:11964/api/";
+			}
+			client.BaseAddress = new Uri(restServiceBaseAddress);
 
 			client.DefaultRequestHeaders.Accept.Add(
 				new MediaTypeWithQualityHeaderValue("application/json"));
 
-  			var response = client.PostAsJsonAsync("globalassetsapi", globalAsset).Result;
+			var response = client.PostAsJsonAsync("globalassetsapi", globalAsset).Result;
 
 			if (response.IsSuccessStatusCode)
 			{
