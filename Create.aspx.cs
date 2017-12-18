@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Data.SqlClient;
-using System.Web.Configuration;
+using System.Configuration;
 using System.Data;
-using AjaxControlToolkit;
+using System.Data.SqlClient;
+using System.Web.UI.WebControls;
 
 
 public partial class Create : System.Web.UI.Page
@@ -39,11 +34,6 @@ public partial class Create : System.Web.UI.Page
 				int atval2;
 				atval2 = Convert.ToInt32(ddl2.SelectedValue);
 				e.Values["AssetSubType"] = atval2;
-				if (!RestServiceHelper.InvokePost(atval, atval2))
-				{
-					ErrorMsg.Text = "Asset Added. Failed to update Global Asset Service.";
-				}
-
 			}
 			catch (Exception ex)
 			{
@@ -64,10 +54,30 @@ public partial class Create : System.Web.UI.Page
 		AssetID = command.ExecuteScalar();
 		sqlConn.Close();
 
-		if (!RestServiceHelper.InvokePost((int)e.Values["AssetSubType"], (int)e.Values["AssetType"]))
+		string clientIdentifier = ConfigurationManager.AppSettings["SubscriptionID"]; ;
+		Nullable<System.DateTime> lastServiceDate = null;
+		Nullable<System.DateTime> nextServiceDate = null;
+
+		DateTime dt;
+		if (DateTime.TryParse(e.Values["StartDate"].ToString(), out dt))
 		{
-			//return;
+			lastServiceDate = dt;
 		}
+
+		if (DateTime.TryParse(e.Values["EndDate"].ToString(), out dt))
+		{
+			nextServiceDate = dt;
+		}
+
+		if (!RestServiceHelper.InvokePost(new GlobalAsset{AssetType = (int)e.Values["AssetType"] , AssetSubType = (int)e.Values["AssetSubType"], ClientIdentifier = clientIdentifier, SerialNumber = e.Values["Name"].ToString(), LastServiceDate = lastServiceDate, NextServiceDate = nextServiceDate, Status = e.Values["Status"].ToString() }))
+		{
+			ErrorMsg.Text = "Asset Added. Failed to update Global Asset Service.";
+		}
+
+		//if (!RestServiceHelper.InvokePost((int)e.Values["AssetSubType"], (int)e.Values["AssetType"]))
+		//{
+		//	//return;
+		//}
 
 		string URL = "AssetDetail.aspx?ID=" + Convert.ToString(AssetID);
 

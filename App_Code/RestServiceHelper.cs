@@ -91,4 +91,29 @@ public static partial class RestServiceHelper
 
 		return false;
 	}
+
+	public static bool InvokePost(GlobalAsset globalAsset)
+	{
+		try
+		{
+			HttpClient client = new HttpClient();
+			client.BaseAddress = new Uri("http://globalassetrestservicesample.azurewebsites.net/api/");
+			//client.BaseAddress = new Uri("http://localhost:11964/api/");
+
+			client.DefaultRequestHeaders.Accept.Add(
+				new MediaTypeWithQualityHeaderValue("application/json"));
+
+  			var response = client.PostAsJsonAsync("globalassetsapi", globalAsset).Result;
+
+			if (response.IsSuccessStatusCode)
+			{
+				return true;
+			}
+		}
+		catch (Exception)
+		{
+		}
+
+		return false;
+	}
 }
