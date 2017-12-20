@@ -16,7 +16,7 @@ public static partial class RestServiceHelper
 		try
 		{
 			HttpClient client = new HttpClient();
-			client.BaseAddress = new Uri("http://localhost:11964/api/");
+			client.BaseAddress = new Uri(GetRestServiceBaseAddress());
 
 			// Add an Accept header for JSON format.
 			client.DefaultRequestHeaders.Accept.Add(
@@ -43,7 +43,7 @@ public static partial class RestServiceHelper
 		try
 		{
 			HttpClient client = new HttpClient();
-			client.BaseAddress = new Uri("http://localhost:11964/api/");
+			client.BaseAddress = new Uri(GetRestServiceBaseAddress());
 
 			client.DefaultRequestHeaders.Accept.Add(
 				new MediaTypeWithQualityHeaderValue("application/json"));
@@ -129,7 +129,6 @@ public static partial class RestServiceHelper
 
 	private static string GetRestServiceBaseAddress()
 	{
-
 		//client.BaseAddress = new Uri("http://globalassetrestservicesample.azurewebsites.net/api/");
 
 		var restServiceBaseAddress = ConfigurationManager.AppSettings["GLOBAL_REST_SERVICE_BASE_ADDRESS"];
