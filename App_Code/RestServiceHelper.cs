@@ -37,8 +37,8 @@ public static partial class RestServiceHelper
 		{
 		}
 	}
-
-	public static async void PostAsync(int assetType, int subAssetType, int count = 1)
+	
+	public static bool InvokePost(string clientIdentifier, int assetType, int subAssetType, int count = 1)
 	{
 		try
 		{
@@ -52,31 +52,8 @@ public static partial class RestServiceHelper
 			{
 				AssetType = assetType,
 				AssetSubType = subAssetType,
-				Count = count
-			};
-
-			var response = client.PostAsJsonAsync("Values", assetCounter);
-		}
-		catch (Exception)
-		{
-		}
-	}
-
-	public static bool InvokePost(int assetType, int subAssetType, int count = 1)
-	{
-		try
-		{
-			HttpClient client = new HttpClient();
-			client.BaseAddress = new Uri("http://localhost:11964/api/");
-
-			client.DefaultRequestHeaders.Accept.Add(
-				new MediaTypeWithQualityHeaderValue("application/json"));
-
-			var assetCounter = new AssetCounter()
-			{
-				AssetType = assetType,
-				AssetSubType = subAssetType,
-				Count = count
+				Count = count,
+				ClientIdentifier = clientIdentifier
 			};
 
 			var response = client.PostAsJsonAsync("Values", assetCounter).Result;
@@ -86,27 +63,25 @@ public static partial class RestServiceHelper
 				return true;
 			}
 		}
-		catch (Exception)
+		catch (Exception ex)
 		{
+			throw ex;
 		}
 
 		return false;
 	}
 
-	public static bool InvokePost(GlobalAsset globalAsset)
+	public static bool InvokePostGlobalAsset(GlobalAsset globalAsset)
 	{
+		return true;
+
 		try
 		{
 			HttpClient client = new HttpClient();
 
-			//client.BaseAddress = new Uri("http://globalassetrestservicesample.azurewebsites.net/api/");
+			
 
-			var restServiceBaseAddress = ConfigurationManager.AppSettings["GLOBAL_REST_SERVICE_BASE_ADDRESS"];
-			if (string.IsNullOrEmpty(restServiceBaseAddress))
-			{
-				restServiceBaseAddress = "http://localhost:11964/api/";
-			}
-			client.BaseAddress = new Uri(restServiceBaseAddress);
+			client.BaseAddress = new Uri(GetRestServiceBaseAddress());
 
 			client.DefaultRequestHeaders.Accept.Add(
 				new MediaTypeWithQualityHeaderValue("application/json"));
@@ -118,10 +93,50 @@ public static partial class RestServiceHelper
 				return true;
 			}
 		}
+		catch (Exception ex)
+		{
+			throw ex;
+		}
+
+		return false;
+	}
+
+
+	public static bool InvokePut(GlobalAsset globalAsset)
+	{
+		try
+		{
+			HttpClient client = new HttpClient();
+
+			client.BaseAddress = new Uri(GetRestServiceBaseAddress());
+
+			client.DefaultRequestHeaders.Accept.Add(
+				new MediaTypeWithQualityHeaderValue("application/json"));
+
+			var response = client.PutAsJsonAsync("globalassetsapi", globalAsset).Result;
+
+			if (response.IsSuccessStatusCode)
+			{
+				return true;
+			}
+		}
 		catch (Exception)
 		{
 		}
 
 		return false;
+	}
+
+	private static string GetRestServiceBaseAddress()
+	{
+
+		//client.BaseAddress = new Uri("http://globalassetrestservicesample.azurewebsites.net/api/");
+
+		var restServiceBaseAddress = ConfigurationManager.AppSettings["GLOBAL_REST_SERVICE_BASE_ADDRESS"];
+		if (string.IsNullOrEmpty(restServiceBaseAddress))
+		{
+			restServiceBaseAddress = "http://localhost:11964/api/";
+		}
+		return restServiceBaseAddress;
 	}
 }

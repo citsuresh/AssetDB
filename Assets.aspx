@@ -124,7 +124,7 @@
                 SortExpression="AssetSubType" />
              <asp:BoundField DataField="Name" HeaderText="Name/Serial Number" 
                 SortExpression="Name" />
-            <asp:BoundField DataField="AltReference" HeaderText="Reference" 
+            <asp:BoundField DataField="AltReference" HeaderText="Client Identifier" 
                 SortExpression="AltReference" />
             <asp:BoundField DataField="Status" HeaderText="Status" 
                 SortExpression="Status" />

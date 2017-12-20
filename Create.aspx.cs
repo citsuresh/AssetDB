@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Web.UI.WebControls;
 
 
@@ -54,30 +55,27 @@ public partial class Create : System.Web.UI.Page
 		AssetID = command.ExecuteScalar();
 		sqlConn.Close();
 
-		string clientIdentifier = ConfigurationManager.AppSettings["SubscriptionID"]; ;
-		Nullable<System.DateTime> lastServiceDate = null;
-		Nullable<System.DateTime> nextServiceDate = null;
+		string clientIdentifier = ConfigurationManager.AppSettings["SubscriptionID"];
 
-		DateTime dt;
-		if (DateTime.TryParse(e.Values["StartDate"].ToString(), out dt))
-		{
-			lastServiceDate = dt;
-		}
+		var newAsset = GetAssetFromDb(Decimal.ToInt32((decimal)AssetID));
 
-		if (DateTime.TryParse(e.Values["EndDate"].ToString(), out dt))
-		{
-			nextServiceDate = dt;
-		}
-
-		if (!RestServiceHelper.InvokePost(new GlobalAsset{AssetType = (int)e.Values["AssetType"] , AssetSubType = (int)e.Values["AssetSubType"], ClientIdentifier = clientIdentifier, SerialNumber = e.Values["Name"].ToString(), LastServiceDate = lastServiceDate, NextServiceDate = nextServiceDate, Status = e.Values["Status"].ToString() }))
+		if (!RestServiceHelper.InvokePostGlobalAsset(newAsset))
 		{
 			ErrorMsg.Text = "Asset Added. Failed to update Global Asset Service.";
 		}
 
-		//if (!RestServiceHelper.InvokePost((int)e.Values["AssetSubType"], (int)e.Values["AssetType"]))
-		//{
-		//	//return;
-		//}
+		try
+		{
+			if (!RestServiceHelper.InvokePost(newAsset.ClientIdentifier, newAsset.AssetType, newAsset.AssetSubType))
+			{
+				ErrorMsg.Text = "Asset Added. Failed to update Global Asset Counter Service.";
+			}
+		}
+		catch (Exception exception)
+		{
+			Debug.WriteLine(exception);
+			ErrorMsg.Text = "Asset Added. Failed to update Global Asset Counter Service." + exception.Message;
+		}
 
 		string URL = "AssetDetail.aspx?ID=" + Convert.ToString(AssetID);
 
@@ -87,5 +85,57 @@ public partial class Create : System.Web.UI.Page
 		}
 
 		Response.Redirect(URL);
+	}
+
+	private GlobalAsset GetAssetFromDb(int assetId)
+	{
+		string conString = System.Configuration.ConfigurationManager.ConnectionStrings["sqlConnectionString"].ToString();
+		SqlConnection sqlConn = new SqlConnection(conString);
+		sqlConn.Open();
+		SqlCommand command = new SqlCommand("usp_GetAsset", sqlConn);
+		command.CommandType = CommandType.StoredProcedure;
+		command.Parameters.Add("@AssetID", SqlDbType.Int).Value = assetId;
+
+		SqlDataAdapter sqlAdapter = new SqlDataAdapter(command);
+		DataSet myDataset = new DataSet();
+		sqlAdapter.Fill(myDataset);
+		sqlConn.Close();
+
+		DataRow dRow = myDataset.Tables[0].Rows[0];
+
+		string assetType = dRow["AssetTypeInt"].ToString();
+		string assetSubType = dRow["AssetSubTypeInt"].ToString();
+		string assetName = dRow["Name"].ToString();
+		string clientidentifier = dRow["AltReference"].ToString();
+		string statusStr = dRow["Status"].ToString();
+		string startDateStr = dRow["StartDate"].ToString();
+		string endDateStr = dRow["EndDate"].ToString();
+
+		Nullable<System.DateTime> lastServiceDate = null;
+		Nullable<System.DateTime> nextServiceDate = null;
+
+		DateTime dt;
+		if (DateTime.TryParse(startDateStr, out dt))
+		{
+			lastServiceDate = dt;
+		}
+
+		if (DateTime.TryParse(endDateStr, out dt))
+		{
+			nextServiceDate = dt;
+		}
+
+		var updatedAsset = new GlobalAsset
+		{
+			AssetID = assetId,
+			AssetType = int.Parse(assetType),
+			AssetSubType = int.Parse(assetSubType),
+			ClientIdentifier = clientidentifier,
+			SerialNumber = assetName,
+			LastServiceDate = lastServiceDate,
+			NextServiceDate = nextServiceDate,
+			Status = statusStr
+		};
+		return updatedAsset;
 	}
 }

@@ -103,7 +103,7 @@
                     </tr>
                     <tr>
                         <td>
-                            Call Ref:</td>
+                            Client Identifier:</td>
                         <td>
                             <asp:TextBox ID="AltReferenceTextBox" runat="server" MaxLength="50"
                                 Text='<%# Bind("AltReference") %>' Width="150px" />

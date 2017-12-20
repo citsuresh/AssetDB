@@ -8,10 +8,13 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Web.Configuration;
 using System.Data;
+using System.Diagnostics;
 using AjaxControlToolkit;
 
 public partial class AssetDetail : System.Web.UI.Page
 {
+	private GlobalAsset editedAsset { get; set; }
+
 	protected void Page_Load(object sender, EventArgs e)
 	{
 		if (!IsPostBack)
@@ -394,15 +397,56 @@ public partial class AssetDetail : System.Web.UI.Page
 		Response.Redirect("AssetDetail.aspx?ID=" + Request.QueryString["ID"].ToString());
 	}
 
+	protected void SqlAsset_OnUpdating(object sender, SqlDataSourceCommandEventArgs e)
+	{
+		this.editedAsset = GetAssetFromDb();
+	}
 
 	protected void SqlAsset_OnUpdated(object sender, SqlDataSourceStatusEventArgs e)
+	{
+
+		var updatedAsset = GetAssetFromDb();
+
+		if (updatedAsset == null)
+		{
+			return;
+		}
+
+		try
+		{
+			if (string.Compare(editedAsset.ClientIdentifier, updatedAsset.ClientIdentifier, StringComparison.InvariantCulture) != 0 || editedAsset.AssetType != updatedAsset.AssetType || editedAsset.AssetSubType != updatedAsset.AssetSubType)
+			{
+				if (!RestServiceHelper.InvokePost(editedAsset.ClientIdentifier, editedAsset.AssetType, editedAsset.AssetSubType, -1))
+				{
+					ErrorMsg.Text = "Asset Updated. Failed to update Global Asset counter Service.";
+				}
+
+				if (!RestServiceHelper.InvokePost(updatedAsset.ClientIdentifier, updatedAsset.AssetType, updatedAsset.AssetSubType, 1))
+				{
+					ErrorMsg.Text = "Asset Updated. Failed to update Global Asset counter Service.";
+				}
+			}
+
+			if (!RestServiceHelper.InvokePostGlobalAsset(updatedAsset))
+			{
+				ErrorMsg.Text = "Asset Updated. Failed to update Global Asset Service.";
+			}
+		}
+		catch (Exception exception)
+		{
+			Debug.WriteLine(exception);
+			ErrorMsg.Text = "Asset Updated. Failed to update Global Asset Service.\n" + exception.Message;
+		}
+	}
+
+	private GlobalAsset GetAssetFromDb()
 	{
 		var assetIdstr = Request.QueryString["ID"];
 		int assetId = 0;
 
 		if (string.IsNullOrEmpty(assetIdstr) || !int.TryParse(assetIdstr, out assetId))
 		{
-			return;
+			return null;
 		}
 
 		string conString = System.Configuration.ConfigurationManager.ConnectionStrings["sqlConnectionString"].ToString();
@@ -417,45 +461,41 @@ public partial class AssetDetail : System.Web.UI.Page
 		sqlAdapter.Fill(myDataset);
 		sqlConn.Close();
 
-		foreach (DataRow dRow in myDataset.Tables[0].Rows)
+		DataRow dRow = myDataset.Tables[0].Rows[0];
+
+		string assetType = dRow["AssetTypeInt"].ToString();
+		string assetSubType = dRow["AssetSubTypeInt"].ToString();
+		string assetName = dRow["Name"].ToString();
+		string clientidentifier = dRow["AltReference"].ToString();
+		string statusStr = dRow["Status"].ToString();
+		string startDateStr = dRow["StartDate"].ToString();
+		string endDateStr = dRow["EndDate"].ToString();
+
+		Nullable<System.DateTime> lastServiceDate = null;
+		Nullable<System.DateTime> nextServiceDate = null;
+
+		DateTime dt;
+		if (DateTime.TryParse(startDateStr, out dt))
 		{
-			string assetType = dRow["AssetTypeInt"].ToString();
-			string assetSubType = dRow["AssetSubTypeInt"].ToString();
-			string assetName = dRow["Name"].ToString();
-			string clientidentifier = dRow["AltReference"].ToString();
-			string statusStr = dRow["Status"].ToString();
-			string startDateStr = dRow["StartDate"].ToString();
-			string endDateStr = dRow["EndDate"].ToString();
-
-			Nullable<System.DateTime> lastServiceDate = null;
-			Nullable<System.DateTime> nextServiceDate = null;
-
-			DateTime dt;
-			if (DateTime.TryParse(startDateStr, out dt))
-			{
-				lastServiceDate = dt;
-			}
-
-			if (DateTime.TryParse(endDateStr, out dt))
-			{
-				nextServiceDate = dt;
-			}
-
-			if (!RestServiceHelper.InvokePost(new GlobalAsset
-			{
-				AssetID = assetId,
-				AssetType = int.Parse(assetType),
-				AssetSubType = int.Parse(assetSubType),
-				ClientIdentifier = clientidentifier,
-				SerialNumber = assetName,
-				LastServiceDate = lastServiceDate,
-				NextServiceDate = nextServiceDate,
-				Status = statusStr
-			}))
-			{
-				ErrorMsg.Text = "Asset Updated. Failed to update Global Asset Service.";
-			}
+			lastServiceDate = dt;
 		}
 
+		if (DateTime.TryParse(endDateStr, out dt))
+		{
+			nextServiceDate = dt;
+		}
+
+		var updatedAsset = new GlobalAsset
+		{
+			AssetID = assetId,
+			AssetType = int.Parse(assetType),
+			AssetSubType = int.Parse(assetSubType),
+			ClientIdentifier = clientidentifier,
+			SerialNumber = assetName,
+			LastServiceDate = lastServiceDate,
+			NextServiceDate = nextServiceDate,
+			Status = statusStr
+		};
+		return updatedAsset;
 	}
 }
