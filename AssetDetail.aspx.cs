@@ -435,7 +435,7 @@ public partial class AssetDetail : System.Web.UI.Page
 		catch (Exception exception)
 		{
 			Debug.WriteLine(exception);
-			ErrorMsg.Text = "Asset Updated. Failed to update Global Asset Service.\n" + exception.Message;
+			ErrorMsg.Text = "Asset Updated. Failed to update Global Asset Service." + exception.Message;
 		}
 	}
 

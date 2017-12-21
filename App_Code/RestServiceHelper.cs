@@ -73,13 +73,9 @@ public static partial class RestServiceHelper
 
 	public static bool InvokePostGlobalAsset(GlobalAsset globalAsset)
 	{
-		return true;
-
 		try
 		{
 			HttpClient client = new HttpClient();
-
-			
 
 			client.BaseAddress = new Uri(GetRestServiceBaseAddress());
 
@@ -92,10 +88,14 @@ public static partial class RestServiceHelper
 			{
 				return true;
 			}
+			else
+			{
+				throw new Exception(response.ReasonPhrase + " : " + response.Content.ReadAsStringAsync().Result);
+			}
 		}
 		catch (Exception ex)
 		{
-			throw ex;
+				throw ex;
 		}
 
 		return false;

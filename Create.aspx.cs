@@ -76,7 +76,7 @@ public partial class Create : System.Web.UI.Page
 			System.Diagnostics.Trace.WriteLine(exception.Message);
 			System.Diagnostics.Trace.WriteLine(exception.InnerException.Message);
 			System.Diagnostics.Trace.WriteLine(exception.StackTrace);
-			ErrorMsg.Text = "Asset Added. Failed to update Global Asset Counter Service." + GetExceptionDisplayMessage(exception);
+			ErrorMsg.Text = "Asset Added. Failed to update Global Asset Counter Service." + exception.GetDisplayMessage();
 		}
 
 		string URL = "AssetDetail.aspx?ID=" + Convert.ToString(AssetID);
@@ -87,19 +87,6 @@ public partial class Create : System.Web.UI.Page
 		}
 
 		Response.Redirect(URL);
-	}
-
-	private string GetExceptionDisplayMessage(Exception ex)
-	{
-		string message = string.Empty;
-		var exception = ex;
-		do
-		{
-			message += exception.Message;
-			exception = exception.InnerException;
-		} while (exception != null);
-
-		return message;
 	}
 
 	private GlobalAsset GetAssetFromDb(int assetId)
