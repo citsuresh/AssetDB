@@ -73,6 +73,11 @@ public static partial class RestServiceHelper
 
 	public static bool InvokePostGlobalAsset(GlobalAsset globalAsset)
 	{
+		if (globalAsset == null)
+		{
+			return false;
+		}
+
 		try
 		{
 			HttpClient client = new HttpClient();

@@ -25,6 +25,9 @@
                 <asp:Parameter Name="Name" Type="String" />
                 <asp:Parameter Name="AltReference" Type="String" />
                 <asp:Parameter Name="Status" Type="String" />
+                <asp:Parameter Name="DeviceStatus" Type="String" />
+                <asp:Parameter Name="HasAlarm" Type="Boolean" />
+                <asp:Parameter Name="AlarmMessage" Type="String" />
                 <asp:Parameter DbType="Date" Name="StartDate" />
                 <asp:Parameter DbType="Date" Name="EndDate" />
                 <asp:Parameter Name="Notes" Type="String" />
@@ -39,6 +42,9 @@
                 <asp:Parameter Name="Name" Type="String" />
                 <asp:Parameter Name="AltReference" Type="String" />
                 <asp:Parameter Name="Status" Type="String" />
+                <asp:Parameter Name="DeviceStatus" Type="String" />
+                <asp:Parameter Name="HasAlarm" Type="Boolean" />
+                <asp:Parameter Name="AlarmMessage" Type="String" />
                 <asp:Parameter DbType="Date" Name="StartDate" />
                 <asp:Parameter DbType="Date" Name="EndDate" />
                 <asp:Parameter Name="Notes" Type="String" />
@@ -124,6 +130,28 @@
                                 <asp:ListItem>Standby</asp:ListItem>
                                 <asp:ListItem></asp:ListItem>
                             </asp:DropDownList>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Device Status:</td>
+                        <td>
+                            <asp:TextBox ID="TextBoxDeviceStatus" runat="server" MaxLength="50"
+                                         Text='<%# Bind("DeviceStatus") %>' Width="150px" />
+                        </td>
+                        <td width="25">
+                        </td>
+                        <td>
+                            Alarm Message:</td>
+                        <td>
+                            <asp:DropDownList ID="HasAlarmDropDown" runat="server" SelectedValue='<%# Bind("HasAlarm") %>'>
+                                <asp:ListItem Text="Yes" Value="True" />
+                                <asp:ListItem Text="No" Value="False" />
+                            </asp:DropDownList>   
+                        </td>
+                        <td>
+                            <asp:TextBox ID="TextBoxAlarmMessage" runat="server" MaxLength="50"
+                                         Text='<%# Bind("AlarmMessage") %>' Width="150px" />
                         </td>
                     </tr>
                     <tr>

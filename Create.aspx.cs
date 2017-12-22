@@ -59,13 +59,19 @@ public partial class Create : System.Web.UI.Page
 
 		var newAsset = GetAssetFromDb(Decimal.ToInt32((decimal)AssetID));
 
-		if (!RestServiceHelper.InvokePostGlobalAsset(newAsset))
+		if (newAsset == null)
 		{
-			ErrorMsg.Text = "Asset Added. Failed to update Global Asset Service.";
+			return;
 		}
 
 		try
 		{
+
+			if (!RestServiceHelper.InvokePostGlobalAsset(newAsset))
+			{
+				ErrorMsg.Text = "Asset Added. Failed to update Global Asset Service.";
+			}
+
 			if (!RestServiceHelper.InvokePost(newAsset.ClientIdentifier, newAsset.AssetType, newAsset.AssetSubType))
 			{
 				ErrorMsg.Text = "Asset Added. Failed to update Global Asset Counter Service.";
@@ -102,6 +108,11 @@ public partial class Create : System.Web.UI.Page
 		DataSet myDataset = new DataSet();
 		sqlAdapter.Fill(myDataset);
 		sqlConn.Close();
+
+		if (myDataset.Tables.Count == 0 || myDataset.Tables[0].Rows.Count == 0)
+		{
+			return null;
+		}
 
 		DataRow dRow = myDataset.Tables[0].Rows[0];
 
