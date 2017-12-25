@@ -22,13 +22,14 @@
                 <asp:Parameter Name="AssetType" Type="Int32" />
                 <asp:Parameter Name="AssetSubType" Type="Int32" />
                 <asp:Parameter Name="Name" Type="String" />
-                <asp:Parameter Name="AltReference" Type="String" />
+                <asp:Parameter Name="ClientID" Type="String" />
+                <asp:Parameter Name="LabID" Type="String" />
                 <asp:Parameter Name="Status" Type="String" />
                 <asp:Parameter Name="DeviceStatus" Type="String" />
                 <asp:Parameter Name="HasAlarm" Type="Boolean" />
                 <asp:Parameter Name="AlarmMessage" Type="String" />
-                <asp:Parameter DbType="Date" Name="StartDate" />
-                <asp:Parameter DbType="Date" Name="EndDate" />
+                <asp:Parameter DbType="Date" Name="LastServiceDate" />
+                <asp:Parameter DbType="Date" Name="NextServiceDate" />
                 <asp:Parameter Name="Notes" Type="String" />
             </InsertParameters>
             <SelectParameters>
@@ -39,13 +40,14 @@
                 <asp:Parameter Name="AssetType" Type="Int32" />
                 <asp:Parameter Name="AssetSubType" Type="Int32" />
                 <asp:Parameter Name="Name" Type="String" />
-                <asp:Parameter Name="AltReference" Type="String" />
+                <asp:Parameter Name="ClientID" Type="String" />
+                <asp:Parameter Name="LabID" Type="String" />
                 <asp:Parameter Name="Status" Type="String" />
                 <asp:Parameter Name="DeviceStatus" Type="String" />
                 <asp:Parameter Name="HasAlarm" Type="Boolean" />
                 <asp:Parameter Name="AlarmMessage" Type="String" />
-                <asp:Parameter DbType="Date" Name="StartDate" />
-                <asp:Parameter DbType="Date" Name="EndDate" />
+                <asp:Parameter DbType="Date" Name="LastServiceDate" />
+                <asp:Parameter DbType="Date" Name="NextServiceDate" />
                 <asp:Parameter Name="Notes" Type="String" />
             </UpdateParameters>
         </asp:SqlDataSource>
@@ -118,10 +120,15 @@
                 <tr>
                     <td>Client Identifier:</td>
                     <td>
-                        <asp:TextBox ID="AltReferenceTextBox" runat="server" MaxLength="50"
-                            Text='<%# Bind("AltReference") %>' Width="150px" />
+                        <asp:TextBox ID="ClientIDTextBox" runat="server" MaxLength="50"
+                            Text='<%# Bind("ClientID") %>' Width="150px" />
                     </td>
-                   
+                    <td width="25"></td>
+                    <td>Lab Identifier:</td>
+                    <td>
+                        <asp:TextBox ID="LabIdTextBox" runat="server" MaxLength="50"
+                                     Text='<%# Bind("LabID") %>' Width="150px" />
+                    </td>
                 </tr>
                 <tr>
                     <td>Device Status:</td>
@@ -143,19 +150,19 @@
                 <tr>
                     <td>Last Service Date:</td>
                     <td>
-                        <asp:TextBox ID="StartDateTextBox" runat="server"
-                            Text='<%# Bind("StartDate", "{0:dd-MM-yyyy}") %>' Width="150px" />
-                        <asp:CalendarExtender ID="StartDateTextBox_CalendarExtender" runat="server"
+                        <asp:TextBox ID="LastServiceDateTextBox" runat="server"
+                            Text='<%# Bind("LastServiceDate", "{0:dd-MM-yyyy}") %>' Width="150px" />
+                        <asp:CalendarExtender ID="LastServiceDateTextBox_CalendarExtender" runat="server"
                             Enabled="True" FirstDayOfWeek="Monday"
-                            Format="dd-MM-yyyy" TargetControlID="StartDateTextBox"></asp:CalendarExtender>
+                            Format="dd-MM-yyyy" TargetControlID="LastServiceDateTextBox"></asp:CalendarExtender>
                     </td>
                     <td width="25"></td>
                     <td>Next Service Date:</td>
                     <td>
-                        <asp:TextBox ID="EndDateTextBox" runat="server" Text='<%# Bind("EndDate", "{0:dd-MM-yyyy}") %>'
+                        <asp:TextBox ID="NextServiceDateTextBox" runat="server" Text='<%# Bind("NextServiceDate", "{0:dd-MM-yyyy}") %>'
                             Width="150px" />
-                        <asp:CalendarExtender ID="EndDateTextBox_CalendarExtender" runat="server"
-                            Enabled="True" TargetControlID="EndDateTextBox" FirstDayOfWeek="Monday"
+                        <asp:CalendarExtender ID="NextServiceDateTextBox_CalendarExtender" runat="server"
+                            Enabled="True" TargetControlID="NextServiceDateTextBox" FirstDayOfWeek="Monday"
                             Format="dd-MM-yyyy"></asp:CalendarExtender>
                     </td>
                 </tr>

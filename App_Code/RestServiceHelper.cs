@@ -38,7 +38,7 @@ public static partial class RestServiceHelper
 		}
 	}
 	
-	public static bool InvokePost(string clientIdentifier, int assetType, int subAssetType, int count = 1)
+	public static bool InvokePost(string ClientID, int assetType, int subAssetType, int count = 1)
 	{
 		try
 		{
@@ -53,7 +53,7 @@ public static partial class RestServiceHelper
 				AssetType = assetType,
 				AssetSubType = subAssetType,
 				Count = count,
-				ClientIdentifier = clientIdentifier
+				ClientID = ClientID
 			};
 
 			var response = client.PostAsJsonAsync("Values", assetCounter).Result;

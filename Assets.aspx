@@ -124,12 +124,12 @@
                 SortExpression="AssetSubType" />
              <asp:BoundField DataField="Name" HeaderText="Name/Serial Number" 
                 SortExpression="Name" />
-            <asp:BoundField DataField="AltReference" HeaderText="Client Identifier" 
-                SortExpression="AltReference" />
+            <asp:BoundField DataField="LabID" HeaderText="Lab Identifier" 
+                SortExpression="LabID" />
             <asp:BoundField DataField="Status" HeaderText="Status" 
                 SortExpression="Status" />
-            <asp:BoundField DataField="EndDate" DataFormatString="{0:d}" 
-                HeaderText="Next Service Date" SortExpression="EndDate" />
+            <asp:BoundField DataField="NextServiceDate" DataFormatString="{0:d}" 
+                HeaderText="Next Service Date" SortExpression="NextServiceDate" />
            
         </Columns>
         <EditRowStyle BackColor="#2461BF" />

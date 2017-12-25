@@ -4,5 +4,5 @@
 	public int AssetType { get; set; }
 	public int AssetSubType { get; set; }
 	public int Count { get; set; }
-	public string ClientIdentifier { get; set; }
+	public string ClientID { get; set; }
 }

@@ -414,14 +414,14 @@ public partial class AssetDetail : System.Web.UI.Page
 
 		try
 		{
-			if (string.Compare(editedAsset.ClientIdentifier, updatedAsset.ClientIdentifier, StringComparison.InvariantCulture) != 0 || editedAsset.AssetType != updatedAsset.AssetType || editedAsset.AssetSubType != updatedAsset.AssetSubType)
+			if (string.Compare(editedAsset.ClientID, updatedAsset.ClientID, StringComparison.InvariantCulture) != 0 || editedAsset.AssetType != updatedAsset.AssetType || editedAsset.AssetSubType != updatedAsset.AssetSubType)
 			{
-				if (!RestServiceHelper.InvokePost(editedAsset.ClientIdentifier, editedAsset.AssetType, editedAsset.AssetSubType, -1))
+				if (!RestServiceHelper.InvokePost(editedAsset.ClientID, editedAsset.AssetType, editedAsset.AssetSubType, -1))
 				{
 					ErrorMsg.Text = "Asset Updated. Failed to update Global Asset counter Service.";
 				}
 
-				if (!RestServiceHelper.InvokePost(updatedAsset.ClientIdentifier, updatedAsset.AssetType, updatedAsset.AssetSubType, 1))
+				if (!RestServiceHelper.InvokePost(updatedAsset.ClientID, updatedAsset.AssetType, updatedAsset.AssetSubType, 1))
 				{
 					ErrorMsg.Text = "Asset Updated. Failed to update Global Asset counter Service.";
 				}
@@ -466,21 +466,21 @@ public partial class AssetDetail : System.Web.UI.Page
 		string assetType = dRow["AssetTypeInt"].ToString();
 		string assetSubType = dRow["AssetSubTypeInt"].ToString();
 		string assetName = dRow["Name"].ToString();
-		string clientidentifier = dRow["AltReference"].ToString();
+		string ClientID = dRow["ClientID"].ToString();
 		string statusStr = dRow["Status"].ToString();
-		string startDateStr = dRow["StartDate"].ToString();
-		string endDateStr = dRow["EndDate"].ToString();
+		string LastServiceDateStr = dRow["LastServiceDate"].ToString();
+		string NextServiceDateStr = dRow["NextServiceDate"].ToString();
 
 		Nullable<System.DateTime> lastServiceDate = null;
 		Nullable<System.DateTime> nextServiceDate = null;
 
 		DateTime dt;
-		if (DateTime.TryParse(startDateStr, out dt))
+		if (DateTime.TryParse(LastServiceDateStr, out dt))
 		{
 			lastServiceDate = dt;
 		}
 
-		if (DateTime.TryParse(endDateStr, out dt))
+		if (DateTime.TryParse(NextServiceDateStr, out dt))
 		{
 			nextServiceDate = dt;
 		}
@@ -490,7 +490,7 @@ public partial class AssetDetail : System.Web.UI.Page
 			AssetID = assetId,
 			AssetType = int.Parse(assetType),
 			AssetSubType = int.Parse(assetSubType),
-			ClientIdentifier = clientidentifier,
+			ClientID = ClientID,
 			SerialNumber = assetName,
 			LastServiceDate = lastServiceDate,
 			NextServiceDate = nextServiceDate,

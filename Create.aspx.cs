@@ -55,7 +55,7 @@ public partial class Create : System.Web.UI.Page
 		AssetID = command.ExecuteScalar();
 		sqlConn.Close();
 
-		string clientIdentifier = ConfigurationManager.AppSettings["SubscriptionID"];
+		string ClientID = ConfigurationManager.AppSettings["SubscriptionID"];
 
 		var newAsset = GetAssetFromDb(Decimal.ToInt32((decimal)AssetID));
 
@@ -72,7 +72,7 @@ public partial class Create : System.Web.UI.Page
 				ErrorMsg.Text = "Asset Added. Failed to update Global Asset Service.";
 			}
 
-			if (!RestServiceHelper.InvokePost(newAsset.ClientIdentifier, newAsset.AssetType, newAsset.AssetSubType))
+			if (!RestServiceHelper.InvokePost(newAsset.ClientID, newAsset.AssetType, newAsset.AssetSubType))
 			{
 				ErrorMsg.Text = "Asset Added. Failed to update Global Asset Counter Service.";
 			}
@@ -119,21 +119,21 @@ public partial class Create : System.Web.UI.Page
 		string assetType = dRow["AssetTypeInt"].ToString();
 		string assetSubType = dRow["AssetSubTypeInt"].ToString();
 		string assetName = dRow["Name"].ToString();
-		string clientidentifier = dRow["AltReference"].ToString();
+		string ClientID = dRow["ClientID"].ToString();
 		string statusStr = dRow["Status"].ToString();
-		string startDateStr = dRow["StartDate"].ToString();
-		string endDateStr = dRow["EndDate"].ToString();
+		string LastServiceDateStr = dRow["LastServiceDate"].ToString();
+		string NextServiceDateStr = dRow["NextServiceDate"].ToString();
 
 		Nullable<System.DateTime> lastServiceDate = null;
 		Nullable<System.DateTime> nextServiceDate = null;
 
 		DateTime dt;
-		if (DateTime.TryParse(startDateStr, out dt))
+		if (DateTime.TryParse(LastServiceDateStr, out dt))
 		{
 			lastServiceDate = dt;
 		}
 
-		if (DateTime.TryParse(endDateStr, out dt))
+		if (DateTime.TryParse(NextServiceDateStr, out dt))
 		{
 			nextServiceDate = dt;
 		}
@@ -143,7 +143,7 @@ public partial class Create : System.Web.UI.Page
 			AssetID = assetId,
 			AssetType = int.Parse(assetType),
 			AssetSubType = int.Parse(assetSubType),
-			ClientIdentifier = clientidentifier,
+			ClientID = ClientID,
 			SerialNumber = assetName,
 			LastServiceDate = lastServiceDate,
 			NextServiceDate = nextServiceDate,
