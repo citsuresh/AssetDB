@@ -48,7 +48,7 @@
                     <ContentTemplate>
                         <asp:FormView ID="FormView1" runat="server" DataKeyNames="AssetID" DataSourceID="SqlAsset"
                             DefaultMode="ReadOnly" EnableModelValidation="True" EnableViewState="True"
-                            Font-Names="Tahoma" Font-Size="Medium">
+                            Font-Names="Tahoma" Font-Size="14px">
                             <EditItemTemplate>
                                 <table class="style1">
                                     <tr>
@@ -68,22 +68,15 @@
                                     </tr>
                                     <tr>
                                         <td>Name/Serial Number:</td>
-                                        <td colspan="4">
-                                            <asp:TextBox ID="NameTextBox" runat="server" MaxLength="50"
-                                                Text='<%# Bind("Name") %>' Width="440px" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Client Identifier:</td>
                                         <td>
-                                            <asp:TextBox ID="AltReferenceTextBox" runat="server" MaxLength="50"
-                                                Text='<%# Bind("AltReference") %>' Width="150px" />
+                                            <asp:TextBox ID="NameTextBox" runat="server" MaxLength="50"
+                                                Text='<%# Bind("Name") %>'/>
                                         </td>
                                         <td width="25"></td>
                                         <td>Status:</td>
                                         <td>
                                             <asp:DropDownList ID="StatusDropDownList" runat="server" MaxLength="15"
-                                                Text='<%# Bind("Status") %>' Width="155px">
+                                                              Text='<%# Bind("Status") %>' Width="155px">
                                                 <asp:ListItem>Active</asp:ListItem>
                                                 <asp:ListItem>Budgeted</asp:ListItem>
                                                 <asp:ListItem>In Service</asp:ListItem>
@@ -97,6 +90,15 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td>Client Identifier:</td>
+                                        <td>
+                                            <asp:TextBox ID="AltReferenceTextBox" runat="server" MaxLength="50"
+                                                Text='<%# Bind("AltReference") %>' Width="150px" />
+                                        </td>
+                                        <td width="25"></td>
+                                        
+                                    </tr>
+                                    <tr>
                                         <td>
                                             Device Status:</td>
                                         <td>
@@ -108,14 +110,12 @@
                                         <td>
                                             Alarm Message:</td>
                                         <td>
-                                            <asp:DropDownList ID="HasAlarmDropDown" runat="server" SelectedValue='<%# Bind("HasAlarm") %>'>
+                                            <asp:DropDownList ID="HasAlarmDropDown" Width="47px" runat="server" SelectedValue='<%# Bind("HasAlarm") %>'>
                                                 <asp:ListItem Text="Yes" Value="True" />
                                                 <asp:ListItem Text="No" Value="False" />
-                                            </asp:DropDownList>   
-                                        </td>
-                                        <td>
+                                            </asp:DropDownList>
                                             <asp:TextBox ID="TextBoxAlarmMessage" runat="server" MaxLength="50"
-                                                         Text='<%# Bind("AlarmMessage") %>' Width="150px" />
+                                                         Text='<%# Bind("AlarmMessage") %>' Width="98px" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -170,9 +170,15 @@
                                     </tr>
                                     <tr>
                                         <td>Name/Serial Number:</td>
-                                        <td colspan="4">
+                                        <td>
                                             <asp:Label ID="NameLabel" runat="server"
                                                 Text='<%# Bind("Name") %>' ForeColor="Black" />
+                                        </td>
+                                        <td width="25"></td>
+                                        <td>Status:</td>
+                                        <td>
+                                            <asp:Label ID="StatusLabel" runat="server"
+                                                       Text='<%# Bind("Status") %>' ForeColor="Black" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -182,13 +188,7 @@
                                                 Text='<%# Bind("AltReference") %>' ForeColor="Black" />
                                         </td>
                                         <td width="25"></td>
-                                        <td>Status:</td>
-                                        <td>
-                                            <asp:Label ID="StatusLabel" runat="server"
-                                                Text='<%# Bind("Status") %>' ForeColor="Black" />
-
-
-                                        </td>
+                                       
                                     </tr>
                                     <tr>
                                         <td>Device Status:</td>
@@ -199,15 +199,13 @@
                                         <td width="25"></td>
                                         <td>Alarm Message:</td>
                                         <td>
-                                            <asp:DropDownList ID="HasAlarmDropDown" Enabled="False" runat="server" SelectedValue='<%# Bind("HasAlarm") %>'>
+                                            <asp:DropDownList Width="47px" ID="HasAlarmDropDown" Enabled="False" runat="server" SelectedValue='<%# Bind("HasAlarm") %>'>
                                                 <asp:ListItem Text="Yes" Value="True" />
                                                 <asp:ListItem Text="No" Value="False" />
-                                            </asp:DropDownList>   
-                                        </td>
+                                            </asp:DropDownList>
 
-                                        <td>
                                             <asp:Label ID="LabelAlarmMessage" runat="server"
-                                                       Text='<%# Bind("AlarmMessage") %>' ForeColor="Black" />
+                                                       Width="50px" Text='<%# Bind("AlarmMessage") %>' ForeColor="Black" />
 
 
                                         </td>
@@ -215,7 +213,7 @@
                                     <tr>
                                         <td>Last Service Date:</td>
                                         <td>
-                                            <asp:Label ID="StartDateLabel" runat="server"
+                                            <asp:Label ID="StartDateLabel" runat="server" 
                                                 Text='<%# Bind("StartDate", "{0:dd-MM-yyyy}") %>' ForeColor="Black" />
                                         </td>
                                         <td width="25"></td>
