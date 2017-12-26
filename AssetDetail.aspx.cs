@@ -9,6 +9,8 @@ using System.IO;
 using System.Web.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
+using System.Threading;
 using AjaxControlToolkit;
 
 public partial class AssetDetail : System.Web.UI.Page
@@ -23,11 +25,19 @@ public partial class AssetDetail : System.Web.UI.Page
         }
     }
 
+    protected override void InitializeCulture()
+    {
+        CultureInfo CI = new CultureInfo("en-IN");
+        CI.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+
+        Thread.CurrentThread.CurrentCulture = CI;
+        Thread.CurrentThread.CurrentUICulture = CI;
+        base.InitializeCulture();
+    }
+
     [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
     public static string[] getTypeLookupValues(string prefixText, int count, string contextKey)
     {
-
-
         string ConnectionString = WebConfigurationManager.ConnectionStrings["SQLConnectionString"].ConnectionString;
         SqlConnection cmd1 = new SqlConnection(ConnectionString);
         SqlCommand command = new SqlCommand("usp_getTypeLookupValues", cmd1);
@@ -51,8 +61,6 @@ public partial class AssetDetail : System.Web.UI.Page
     [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
     public static string[] getSubTypeLookupValues(string prefixText, int count, string contextKey)
     {
-
-
         string ConnectionString = WebConfigurationManager.ConnectionStrings["SQLConnectionString"].ConnectionString;
         SqlConnection cmd1 = new SqlConnection(ConnectionString);
         SqlCommand command = new SqlCommand("usp_getSubTypeLookupValues", cmd1);
@@ -72,11 +80,10 @@ public partial class AssetDetail : System.Web.UI.Page
 
         return items;
     }
+
     protected void UpdateButton_Click(object sender, EventArgs e)
     {
         SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["SQLConnectionString"].ToString());
-
-
 
         //Loop thru gridview rows and fill Update requests
         try
@@ -99,16 +106,11 @@ public partial class AssetDetail : System.Web.UI.Page
 
         }
         this.UpdatePanel1.Update();
-
-
-
     }
 
     protected void UpdateSubButton_Click(object sender, EventArgs e)
     {
         SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["SQLConnectionString"].ToString());
-
-
 
         //Loop thru gridview rows and fill Update requests
         try
@@ -171,8 +173,6 @@ public partial class AssetDetail : System.Web.UI.Page
 
         SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["SQLConnectionString"].ToString());
 
-
-
         //Loop thru gridview rows and fill Update requests
         try
         {
@@ -189,17 +189,12 @@ public partial class AssetDetail : System.Web.UI.Page
                 LabelErr.Text = "Invalid file type";
                 return;
             }
-
-
         }
         catch (Exception ex)
         {
             ErrorMsg.Text = ex.ToString();
 
         }
-
-
-
 
         using (SqlConnection myConnection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["sqlConnectionString"].ToString()))
         {
@@ -218,23 +213,14 @@ public partial class AssetDetail : System.Web.UI.Page
             myConnection.Open();
             cmd1.ExecuteNonQuery();
             myConnection.Close();
-
-
-
         }
-
-
-
-
     }
+
     protected void GridView3_SelectedIndexChanged(object sender, EventArgs e)
     {
-
         string DocumentID = GridView3.SelectedValue.ToString(); //-- if something was passed to the file querystring
         if (DocumentID != "")
         {
-
-
             using (SqlConnection myConnection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["sqlConnectionString"].ToString()))
             {
                 SqlCommand cmd1 = new SqlCommand("usp_DocumentOpen", myConnection);
@@ -260,9 +246,7 @@ public partial class AssetDetail : System.Web.UI.Page
 
                 myReader.Close();
                 myConnection.Close();
-
             }
-
         }
         else
         {
@@ -270,6 +254,7 @@ public partial class AssetDetail : System.Web.UI.Page
             Response.Write("Please provide a file to download.");
         }
     }
+
     private void PopulateRootLevel()
     {
         string ConnectionString = WebConfigurationManager.ConnectionStrings["SQLConnectionString"].ConnectionString;
@@ -283,6 +268,7 @@ public partial class AssetDetail : System.Web.UI.Page
         PopulateNodes(dt, TreeView1.Nodes);
         ErrorMsg.Text = Request.QueryString["ErrorMessage"];
     }
+
     private void PopulateNodes(DataTable dt, TreeNodeCollection nodes)
     {
 
@@ -297,9 +283,7 @@ public partial class AssetDetail : System.Web.UI.Page
 
             //If <strong class="highlight">node</strong> has child nodes, then enable on-demand populating
             tn.PopulateOnDemand = ((int)dr["childnodecount"] > 0);
-
         }
-
     }
 
     private void PopulateSubLevel(int parentid, int assetid, TreeNode parentNode)
@@ -316,11 +300,13 @@ public partial class AssetDetail : System.Web.UI.Page
         da.Fill(dt);
         PopulateNodes(dt, parentNode.ChildNodes);
     }
+
     protected void TreeView1_TreeNodePopulate(object sender, TreeNodeEventArgs e)
     {
         int assetid = Convert.ToInt16(Request.QueryString["ID"].ToString());
         PopulateSubLevel(Convert.ToInt32(e.Node.Value), assetid, e.Node);
     }
+
     protected void AssetTypeDropDownList_SelectedIndexChanged(object sender, EventArgs e)
     {
         AssetSubTypeDropDownList.Items.Clear();
@@ -328,6 +314,7 @@ public partial class AssetDetail : System.Web.UI.Page
         AssetSubTypeDropDownList.Items.Add(new ListItem("Please Select", "%"));
 
     }
+
     protected void AddButton_Click(object sender, EventArgs e)
     {
         using (SqlConnection myConnection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["sqlConnectionString"].ToString()))
@@ -345,6 +332,7 @@ public partial class AssetDetail : System.Web.UI.Page
 
         }
     }
+
     protected void TreeView1_TreeNodeCheckChanged(object sender, TreeNodeEventArgs e)
     {
         using (SqlConnection myConnection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["sqlConnectionString"].ToString()))
@@ -357,12 +345,9 @@ public partial class AssetDetail : System.Web.UI.Page
             myConnection.Open();
             cmd1.ExecuteNonQuery();
             myConnection.Close();
-
-
-
         }
-
     }
+
     protected void LinkButtonDelete_Click(object sender, EventArgs e)
     {
         /* TreeView tn = TreeView1;
@@ -388,11 +373,6 @@ public partial class AssetDetail : System.Web.UI.Page
 				 }
 				 // Recurse through the child nodes...
 			 }
-
-
-
-
-
 		 }*/
         Response.Redirect("AssetDetail.aspx?ID=" + Request.QueryString["ID"].ToString());
     }
@@ -404,7 +384,6 @@ public partial class AssetDetail : System.Web.UI.Page
 
     protected void SqlAsset_OnUpdated(object sender, SqlDataSourceStatusEventArgs e)
     {
-
         var updatedAsset = GetAssetFromDb();
 
         if (updatedAsset == null)
@@ -435,7 +414,7 @@ public partial class AssetDetail : System.Web.UI.Page
         catch (Exception exception)
         {
             Debug.WriteLine(exception);
-            ErrorMsg.Text = "Asset Updated. Failed to update Global Asset Service." + exception.Message;
+            ErrorMsg.Text = "Asset Updated. Failed to update Global Asset Service." + exception.GetDisplayMessage();
         }
     }
 
@@ -503,7 +482,7 @@ public partial class AssetDetail : System.Web.UI.Page
         catch (Exception exception)
         {
             Debug.WriteLine(exception);
-            ErrorMsg.Text = "Asset Updated. Failed to update Global Asset Service." + exception.Message;
+            ErrorMsg.Text = "Asset Updated. Failed to update Global Asset Service." + exception.GetDisplayMessage();
         }
 
         return null;

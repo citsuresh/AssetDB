@@ -2,9 +2,9 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
+using System.Globalization;
+using System.Threading;
 using System.Web.UI.WebControls;
-
 
 public partial class Create : System.Web.UI.Page
 {
@@ -13,9 +13,18 @@ public partial class Create : System.Web.UI.Page
 
 	}
 
-	protected void FormView1_ItemInserting(object sender, FormViewInsertEventArgs e)
-	{
+    protected override void InitializeCulture()
+    {
+        CultureInfo CI = new CultureInfo("en-IN");
+        CI.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
 
+        Thread.CurrentThread.CurrentCulture = CI;
+        Thread.CurrentThread.CurrentUICulture = CI;
+        base.InitializeCulture();
+    }
+
+    protected void FormView1_ItemInserting(object sender, FormViewInsertEventArgs e)
+	{
 		DropDownList ddl = (DropDownList)FormView1.FindControl("AssetTypeDropDownList");
 		DropDownList ddl2 = (DropDownList)FormView1.FindControl("AssetSubTypeDropDownList");
 
@@ -44,6 +53,7 @@ public partial class Create : System.Web.UI.Page
 			}
 		}
 	}
+
 	protected void FormView1_ItemInserted(object sender, FormViewInsertedEventArgs e)
 	{
 		string conString = System.Configuration.ConfigurationManager.ConnectionStrings["sqlConnectionString"].ToString();
@@ -66,7 +76,6 @@ public partial class Create : System.Web.UI.Page
 
 		try
 		{
-
 			if (!RestServiceHelper.InvokePostGlobalAsset(newAsset))
 			{
 				ErrorMsg.Text = "Asset Added. Failed to update Global Asset Service.";
