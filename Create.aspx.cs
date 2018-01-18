@@ -10,7 +10,8 @@ public partial class Create : System.Web.UI.Page
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{
-
+	    var clientIDTextBox = (TextBox)FormView1.FindControl("ClientIDTextBox");
+         clientIDTextBox.Text = ConfigurationManager.AppSettings["CLIENT_ID"];
 	}
 
     protected override void InitializeCulture()
