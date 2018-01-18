@@ -102,8 +102,6 @@ public static partial class RestServiceHelper
 		{
 				throw ex;
 		}
-
-		return false;
 	}
 
 

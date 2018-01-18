@@ -124,7 +124,9 @@
                 SortExpression="AssetSubType" />
              <asp:BoundField DataField="Name" HeaderText="Name/Serial Number" 
                 SortExpression="Name" />
-            <asp:BoundField DataField="LabID" HeaderText="Lab Identifier" 
+            <asp:BoundField DataField="ClientID" HeaderText="Client Id" 
+                            SortExpression="ClientID" />
+            <asp:BoundField DataField="LabID" HeaderText="Lab Id" 
                 SortExpression="LabID" />
             <asp:BoundField DataField="Status" HeaderText="Status" 
                 SortExpression="Status" />
