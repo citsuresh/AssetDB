@@ -41,6 +41,8 @@
             <div class="title">
                 <h1>
                     Asset Management Database
+                    <br/>
+                    Organization Name: <asp:Literal runat="server" Text="<%$ AppSettings:CLIENT_ID%>" />
                 </h1>
             </div>
             <div class="loginDisplay">
